@@ -41,4 +41,7 @@ def main(streamlit: st.file_uploader = None):
 	collateral_df = pd.DataFrame(collateral)
 	spend_df = pd.DataFrame(spend)
 
-main()
+try:	
+	main()
+except Exception as e:
+	print(fetch_data())
