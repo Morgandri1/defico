@@ -24,7 +24,7 @@ def main(streamlit: st.file_uploader = None):
 		data = json.loads(streamlit.getvalue())
 
 	if type(data) == dict:
-		data = [data]
+		data = data["transactions"]
 
 	collateral = []
 	spend = []
