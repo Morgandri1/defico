@@ -1,31 +1,44 @@
 import streamlit as st
 import pandas as pd
 import json
+import os
+import requests
 
-st.title('Parse Bank Transaction Data')
+def fetch_data():
+	url = "https://api.raincards.xyz/v1/transactions"
+	headers = {
+		"Accept": "application/json",
+		"Api-Key": os.environ.get('API_KEY')
+	}
+	response = requests.get(url, headers=headers)
+	return response.json()
 
-import json
+def setup_streamlit():
+	st.title('Parse card transaction data')
+	return st.file_uploader('Upload JSON file', type=['json'])
 
-uploaded_file = st.file_uploader('Upload JSON file', type=['json'])
+def main(streamlit):
+	if not streamlit:
+		data = fetch_data()
+	else:
+		data = json.loads(streamlit.getvalue())
 
-if uploaded_file:
+	if type(data) == dict:
+		data = [data]
 
-  data = json.loads(uploaded_file.getvalue())
+	collateral = []
+	spend = []
 
-  if type(data) == dict:
-     data = [data]
+	for row in data:
+		if 'collateral_add' in row['type']:
+			collateral.append(row)
+		elif 'spend' in row['type']:
+			spend.append(row)
 
-  collateral = []
-  spend = []
+	print(f"Collateral rows: {len(collateral)}") 
+	print(f"Spend rows: {len(spend)}")
 
-  for row in data:
-    if 'collateral_add' in row['type']:
-      collateral.append(row)
-    elif 'spend' in row['type']:
-      spend.append(row)
+	collateral_df = pd.DataFrame(collateral)
+	spend_df = pd.DataFrame(spend)
 
-  print(f"Collateral rows: {len(collateral)}") 
-  print(f"Spend rows: {len(spend)}")
-
-  collateral_df = pd.DataFrame(collateral)
-  spend_df = pd.DataFrame(spend)
+main()
