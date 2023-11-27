@@ -41,4 +41,4 @@ def main(streamlit: st.file_uploader = None):
 	collateral_df = pd.DataFrame(collateral)
 	spend_df = pd.DataFrame(spend)
 
-main()
+main(setup_streamlit())
