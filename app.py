@@ -53,7 +53,7 @@ collateral_df = pd.DataFrame(collateral)
 spend_df = pd.DataFrame(spend)
 
 st.write("Collateral Adds")
-st.dataframe(collateral_df)
+st.dataframe(collateral_df, width=1500)
 
 st.write("Spends")
-st.dataframe(spend_df)
+st.dataframe(spend_df, width=1500)
