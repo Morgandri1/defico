@@ -17,28 +17,28 @@ def setup_streamlit():
 	st.title('Parse card transaction data')
 	return st.file_uploader('Upload JSON file', type=['json'])
 
-def main(streamlit: st.file_uploader = None):
-	if not streamlit:
-		data = fetch_data()
-	else:
-		data = json.loads(streamlit.getvalue())
 
-	if type(data) == dict:
-		data = data["transactions"]
+streamlit = setup_streamlit()
 
-	collateral = []
-	spend = []
+if not streamlit:
+	data = fetch_data()
+else:
+	data = json.loads(streamlit.getvalue())
 
-	for row in data:
-		if 'collateral_add' in row['type']:
-			collateral.append(row)
-		elif 'spend' in row['type']:
-			spend.append(row)
+if type(data) == dict:
+	data = data["transactions"]
 
-	print(f"Collateral rows: {len(collateral)}") 
-	print(f"Spend rows: {len(spend)}")
+collateral = []
+spend = []
 
-	collateral_df = pd.DataFrame(collateral)
-	spend_df = pd.DataFrame(spend)
+for row in data:
+	if 'collateral_add' in row['type']:
+		collateral.append(row)
+	elif 'spend' in row['type']:
+		spend.append(row)
 
-main(setup_streamlit())
+print(f"Collateral rows: {len(collateral)}") 
+print(f"Spend rows: {len(spend)}")
+
+collateral_df = pd.DataFrame(collateral)
+spend_df = pd.DataFrame(spend)
