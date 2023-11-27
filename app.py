@@ -15,9 +15,10 @@ def fetch_data():
 
 def setup_streamlit():
 	st.title('Parse card transaction data')
-	return st.file_uploader('Upload JSON file', type=['json'])
 
-streamlit = setup_streamlit()
+setup_streamlit() # will add more functionality when applicable
+
+streamlit = st.file_uploader('Upload JSON file', type=['json'])
 
 if not streamlit:
 	data = fetch_data()
@@ -31,9 +32,12 @@ collateral = []
 spend = []
 
 for row in data: # 1 row = 1 transaction
+	row["amount"] = row["amount"] / 100
 	if row['type'] == 'collateral_add':
+		del row["type"]
 		collateral.append(row)
 	elif row['type'] == 'spend':
+		del row["type"]
 		spend.append(row)
 	else:
 		print(f"Unknown type: {row['type']}")
