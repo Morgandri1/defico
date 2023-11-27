@@ -33,6 +33,10 @@ spend = []
 
 for row in data: # 1 row = 1 transaction
 	row["amount"] = row["amount"] / 100
+	del row["currency"]
+	del row["chain"]
+	del row["transactionHash"]
+	del row["walletAddress"]
 	if row['type'] == 'collateral_add':
 		del row["type"]
 		collateral.append(row)
