@@ -17,7 +17,7 @@ def setup_streamlit():
 	st.title('Parse card transaction data')
 	return st.file_uploader('Upload JSON file', type=['json'])
 
-def main(streamlit):
+def main(streamlit: st.file_uploader | None = None):
 	if not streamlit:
 		data = fetch_data()
 	else:
